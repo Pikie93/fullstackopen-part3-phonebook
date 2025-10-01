@@ -12,14 +12,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Build outputs
-frontend/dist/
-frontend/dist-ssr/
+dist/
+**/dist/
+**/dist-ssr/
 
 # Environment files
 *.local
 .env
 phonebookback/.env
-frontend/.env
+phonebookback/client/.env
 
 # Editor / OS files
 .vscode/*

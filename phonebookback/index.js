@@ -29,6 +29,11 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(requestLogger);
 app.use(express.json());
+app.use(express.static("dist"));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
 
 morgan.token("body", (req) => {
   if (req.method === "POST") {
@@ -113,12 +118,6 @@ app.delete("/api/persons/:id", (request, response, next) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
-
-app.use(express.static("dist"));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-});
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
