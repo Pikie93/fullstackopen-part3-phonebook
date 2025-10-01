@@ -29,7 +29,6 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(requestLogger);
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" }));
 
 morgan.token("body", (req) => {
   if (req.method === "POST") {
