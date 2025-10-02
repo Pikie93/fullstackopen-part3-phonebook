@@ -55,7 +55,8 @@ const App = () => {
               })
               .catch((error) => {
                 handleNotifications(
-                  `'Information of ${existingPerson.name}' has already been removed.`,
+                  error.response?.data?.error ||
+                    `'Information of ${existingPerson.name}' has already been removed.`,
                   "error"
                 );
                 setPersons(persons.filter((ep) => ep.id !== existingPerson.id));
@@ -75,13 +76,21 @@ const App = () => {
           name: newName,
           number: newNumber,
         };
-        personsService.create(personObject).then((response) => {
-          setPersons(persons.concat(response.data));
-          handleNotifications(
-            `'${personObject.name}' was added successfully`,
-            "notification"
-          );
-        });
+        personsService
+          .create(personObject)
+          .then((response) => {
+            setPersons(persons.concat(response.data));
+            handleNotifications(
+              `'${personObject.name}' was added successfully`,
+              "notification"
+            );
+          })
+          .catch((error) => {
+            handleNotifications(
+              error.response?.data?.error || "An unexpected error occurred",
+              "error"
+            );
+          });
       }
       setNewName("");
       setNewNumber("");
@@ -99,7 +108,8 @@ const App = () => {
         .then(() => setPersons(persons.filter((person) => person.id !== id)))
         .catch((error) => {
           handleNotifications(
-            `'Information of ${name}' has already been removed.`,
+            error.response?.data?.error ||
+              `'Information of ${name}' has already been removed.`,
             "error"
           );
           setPersons(persons.filter((person) => person.id !== id));
